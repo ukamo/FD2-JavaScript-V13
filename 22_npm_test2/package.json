@@ -1,7 +1,7 @@
 {
   "name": "phoenix_front",
   "version": "1.0.0",
-  "description": "",
+  "description": "Phoenix frontend",
   "main": "index.js",
   "dependencies": {
     "react": "^15.6.1",

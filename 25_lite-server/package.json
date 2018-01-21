@@ -1,0 +1,8 @@
+{
+  "name": "test_project",
+  "version": "1.0.0",
+  "description": "тестовый проект",
+  "scripts": {
+    "start": "lite-server"
+  }
+}
