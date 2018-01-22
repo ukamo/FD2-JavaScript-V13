@@ -4,7 +4,7 @@
   "description": "пример сборки модульного кода",
   "main": "main.js",
   "scripts": {
-    "build": ".\\node_modules\\.bin\\webpack --config webpack.config.new.js"
+    "build": ".\\node_modules\\.bin\\webpack"
   },
   "author": "",
   "license": "ISC",

@@ -1,124 +1,95 @@
+// webpack.config.new.js    
+'use strict';
+
 const path = require('path');
-const fs = require('fs');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-const isDevelopment = !process.env.production;
-const assetsPath = path.join(__dirname, '/public');
-
-const extractCSS = new ExtractTextPlugin({
-    filename: "bundle.css"
-});
-
-const extractSass = new ExtractTextPlugin({
-    filename: '[name].css',
-    disable: isDevelopment
-});
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin  = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const config = {
+    // точка входа для процесса сборки
     entry: {
-        main: './src/main.js'
+        main: path.resolve(__dirname, 'src', 'main.js')
     },
+    // указываем паблик-директорию для результата сборки
     output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'public')
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.[hash].js'
     },
     module: {
-      rules: [
+        rules: [
         {
-            test: /\.js$/,
-            exclude: [/node_modules/],
-            use: [{
-                loader: 'babel-loader',
-                options: {
-                    presets: ['env']
+            test: /\.(html)$/,
+            use: [
+                // для демонстрации полной работы загрузчика
+                // обработает исходные .html-файлы и скопирует их в output 
+                // {
+                //     loader: 'file-loader',
+                //     options: {
+                //         name: '[name]-dist.[ext]' 
+                //     },
+                // },
+                // {
+                //     loader: 'extract-loader',
+                // }, 
+                {
+                    loader: 'html-loader',
+                    options: {
+                        // https://github.com/webpack-contrib/html-loader/issues/131
+                        interpolate: true
+                    }
                 }
-            }]
+            ]
+        },
+        {
+            test: /\.js$/, // как обрабатывать исходные js-файлы
+            include: path.resolve(__dirname, 'src'), // где находятся исходные файлы
+            loader: 'babel-loader',
+            options: {
+                presets: ['env', 'stage-0'] // аналог .babelrc 
+            }
         }, 
         {
-            test: /\.css$/,
-            use: extractCSS.extract({
-                use: ["css-loader"]
-            })
-        },
-        {
-            test: /\.scss$/,
-            exclude: [/node_modules/],
-            use: extractSass.extract({
+            test: /\.css$/, // как обрабатывать исходные css-файлы
+            include: path.resolve(__dirname, 'src'),
+            use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
-                //resolve-url-loader may be chained before sass-loader if necessary
-                use: [{
-                        loader: 'css-loader',
-                        options: {
-                            minimize: !isDevelopment
-                        }
-                    },
-                    'sass-loader',
-                    'resolve-url-loader'
-                ]
+                use: 'css-loader'
             })
         },
         {
-            test: /\.(gif|png|jpe?g|svg)$/i,
+            test: /\.(png|svg|jpg|gif)$/,
             use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: 'images/[name][hash].[ext]'
-                    }
-                }, {
-                    loader: 'image-webpack-loader',
-                    options: {
-                        mozjpeg: {
-                            progressive: true,
-                            quality: 70
-                        }
-                    }
-                },
-            ],
-        },
-        {
-            test: /\.(eot|svg|ttf|woff|woff2)$/,
-            use: {
                 loader: 'file-loader',
                 options: {
-                    name: 'fonts/[name][hash].[ext]'
+                    // для сохранения структуры директорий, хранящих изображения
+                    context: './src',
+                    useRelativePath: true,
+                    name: '[name].[ext]'
                 }
-            },
-        }
-      ]
+            }]
+        }]
     },
     plugins: [
-        new webpack.ProvidePlugin({
-            _: 'lodash'
+        new CleanWebpackPlugin(['dist'], { verbose: true }), // очищать /dist при сборке
+        // неприемлимый способ - просто скопировать все изображения в /dist 
+        // new CopyWebpackPlugin([{
+        //     from: path.join(__dirname, 'src', 'img'),
+        //     to: path.join(__dirname, 'dist', 'src', 'img')
+        // }]),
+        new ExtractTextPlugin('bundle.[hash].css'),
+        new HtmlWebpackPlugin({
+            //template: 'html-loader!./src/index.html'
+            template: path.resolve(__dirname, 'src', 'index.html'),
+            filename: 'index.html', // имя
         }),
-        extractSass
-    ],
-    devServer: {
-        contentBase: path.join(__dirname, 'public'),
-        compress: true,
-        port: 9000
-    }
-};
-
-if (isDevelopment) {
-    fs.readdirSync(assetsPath)
-        .map((fileName) => {
-            if (['.css', '.js'].includes(path.extname(fileName))) {
-                return fs.unlinkSync(`${assetsPath}/${fileName}`);
-            }
-
-            return '';
-        });
-} else {
-    config.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-                drop_console: true,
-                unsafe: true
-            }
-        })
-    );
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, 'src', 'about.html'),
+            filename: 'about.html' 
+        }),
+    ]
 }
 
 module.exports = config;
