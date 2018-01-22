@@ -4,7 +4,7 @@
   "description": "пример сборки модульного кода",
   "main": "main.js",
   "scripts": {
-    "build": ".\\node_modules\\.bin\\webpack"
+    "build": ".\\node_modules\\.bin\\webpack --config webpack.config.new.js"
   },
   "author": "",
   "license": "ISC",
@@ -13,11 +13,14 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.17",
+    "copy-webpack-plugin": "^4.3.1",
     "css-loader": "^0.28.7",
     "extract-loader": "^1.0.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
     "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^2.30.1",
     "image-webpack-loader": "^3.4.2",
     "lite-server": "^2.3.0",
     "lodash": "^4.17.4",
