@@ -1,0 +1,24 @@
+{
+  "name": "modules_example",
+  "version": "1.0.0",
+  "description": "пример сборки модульного кода",
+  "main": "main.js",
+  "scripts": {
+    "build": ".\\node_modules\\.bin\\webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "extract-loader": "^1.0.2",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "html-loader": "^0.5.5",
+    "lite-server": "^2.3.0",
+    "webpack": "^3.8.1"
+  }
+}

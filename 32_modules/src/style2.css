@@ -1,0 +1,9 @@
+  @media all and (min-width: 800px)
+  {
+    .Content
+    {
+      background-image: url('img/ball.png');
+      background-repeat: repeat-y;
+      background-position: right top;
+    }
+  }
