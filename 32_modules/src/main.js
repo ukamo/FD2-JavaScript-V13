@@ -2,4 +2,4 @@ import './style1.css';
 
 import {quadra} from './second.js'
 
-alert( quadra(5) );
+document.getElementById('FOOTBALL').innerHTML+=" "+quadra(5);
