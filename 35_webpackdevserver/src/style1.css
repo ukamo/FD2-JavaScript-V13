@@ -1,0 +1,15 @@
+﻿  div
+  {
+    text-align: justify;
+  }
+
+  .Menu
+  {
+    width: 185px;
+    float: left;
+  }
+
+  .Content
+  {
+    margin-left: 200px;
+  }
